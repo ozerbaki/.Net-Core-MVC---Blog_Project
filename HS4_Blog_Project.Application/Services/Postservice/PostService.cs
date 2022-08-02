@@ -176,6 +176,27 @@ namespace HS4_Blog_Project.Application.Services.Postservice
             return posts;
         }
 
+        public async Task<List<GetPostsVM>> GetPostsForMembers()
+        {
+            var posts = await _postRrepository.GetFilteredList(
+                select: x=>new GetPostsVM
+                {
+                    Id=x.Id,
+                    AuthorFirstName=x.Author.FirstName,
+                    AuthorLastName=x.Author.LastName,
+                    Content=x.Content,
+                    CreateDate=x.CreateDate,
+                    ImagePath=x.ImagePath,
+                    Title=x.Title,
+                    AuthorImagePath=x.Author.ImagePath
+                },
+                where: x=>x.Status != Status.Passive,
+                orderBy: x=>x.OrderByDescending(x=>x.CreateDate)
+                );
+
+            return posts;
+        }
+
         //View'da kullanıcının değiştirdiği alanlar UpdatePostDTO nesnesi aracılığıyla service gönderilir. _mapper.Map<Post>(model) ile eşleme yapılır. Veritabanında güncelleme yapılır.
         public async Task Update(UpdatePostDTO model)
         {

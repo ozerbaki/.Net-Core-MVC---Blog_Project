@@ -24,5 +24,7 @@ namespace HS4_Blog_Project.Application.Services.Postservice
        
         Task<CreatePostDTO> CreatePost();
 
+        Task<List<GetPostsVM>> GetPostsForMembers();
+
     }
 }
